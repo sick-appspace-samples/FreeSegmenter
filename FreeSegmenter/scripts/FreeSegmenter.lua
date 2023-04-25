@@ -5,16 +5,12 @@ print('AppEngine Version: ' .. Engine.getVersion())
 local DELAY = 1200
 
 -- Creating viewer
-local viewer = View.create('viewer2D1')
+local viewer = View.create()
 
 -- Setting up graphical overlay attributes
-local decoration = View.ShapeDecoration.create()
-decoration:setLineColor(0, 255, 0)
-decoration:setLineWidth(2)
+local decoration = View.ShapeDecoration.create():setLineColor(0, 255, 0):setLineWidth(2)
 
-local charDeco = View.TextDecoration.create()
-charDeco:setSize(40)
-charDeco:setColor(0, 255, 0)
+local charDeco = View.TextDecoration.create():setSize(40):setColor(0, 255, 0)
 
 -- Creating classifier and select font
 local fontClassifier = Image.OCR.Halcon.FontClassifier.create()
@@ -54,9 +50,7 @@ local function main()
 
   local darkPix = img:threshold(0, 98)
   darkPix = darkPix:findConnected(100)
-  for i = 1, #darkPix do
-    darkPix[i] = Image.PixelRegion.getConvexHull(darkPix[i])
-  end
+  darkPix = Image.PixelRegion.getConvexHull(darkPix)
   viewer:addPixelRegion(darkPix)
   viewer:present()
   Script.sleep(DELAY)
@@ -73,17 +67,8 @@ local function main()
   -- Find intersection between dark and light areas, i.e. the light areas inside the dark areas
   viewer:clear()
   viewer:addImage(img)
-  local brightChars = {}
-  for i = 1, #darkPix do
-    brightChars[i] = Image.PixelRegion.getIntersection(darkPix[i], brightPix)
-  end
-  local charBlobs = {}
-  for i = 1, #brightChars do
-    local tempBlobs = Image.PixelRegion.findConnected(brightChars[i], 200, 10000)
-    for j = 1, #tempBlobs do
-      table.insert(charBlobs, tempBlobs[j])
-    end
-  end
+  local brightChars = Image.PixelRegion.getIntersection(darkPix, brightPix)
+  local charBlobs = Image.PixelRegion.findConnected(brightChars, 200, 10000)
   viewer:addPixelRegion(charBlobs)
   viewer:present()
   Script.sleep(DELAY) -- for demonstration purpose only

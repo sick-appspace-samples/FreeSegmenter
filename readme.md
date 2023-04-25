@@ -1,13 +1,20 @@
 ## FreeSegmenter
+
 Reading the text engraved in the metal surface, with preprocessing to adapt
 to optical condition.
 
 ### Description
+
+Disclaimer: this sample will run only on physical AppSpace enabled device such as
+InspectorP or SIM or with Software AppEngine when a valid HALCON license is
+installed and available.
+
 The optical conditions require special pre-processing. Smoothing, binarization,
 dilation and blob finding are used for the segmentation.  Smoothing and inversion
 are used for the classification.
 
 ### How to Run
+
 Starting this sample is possible either by running the App (F5) or
 debugging (F7+F10). Setting breakpoint on the first row inside the 'main'
 function allows debugging step-by-step after 'Engine.OnStarted' event.
@@ -19,7 +26,9 @@ Alternatively the Emulator in AppStudio 2.3 or higher can be used in conjunction
 with a HALCON developer license and dongle.
 
 ### More Information
+
 Tutorial "Algorithms - OCR"
 
 ### Topics
-Algorithm, Image-2D, OCR, Sample, SICK-AppSpace
+
+algorithm, image-2d, ocr, sample, sick-appspace, halcon
